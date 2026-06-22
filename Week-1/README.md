@@ -62,10 +62,30 @@ See the resources pdf in the same directory as this
 - [Karpathy: Neural Networks Zero to Hero (Lecture 1)](https://www.youtube.com/watch?v=VMj-3S1tku0)
 - [Daniel Bourke: Learn PyTorch](https://www.learnpytorch.io/)
 
-## Stuck?
+# Week 1 — MNIST Classification
 
-Ask in the SOC Whatsapp group or reach out to me or Rehan
+**Mentee:** Umesh Motiwale
+**SoC Track:** Diffusion Models from Scratch — SoC 2026
 
----
+## Final results
+- **Test accuracy:** 0.9824
+- **Best validation accuracy:** 0.9812 at epoch 10
+- **Final train loss:** ~0.0238
 
-**Next week:** Convolutional networks and the UNet — the architecture behind every diffusion model.
+## Design choices
+- **Architecture:** Simple MLP — 784 → 256 → 256 → 10, with ReLU and dropout (p=0.2) after each hidden layer
+- **Optimizer:** Adam, lr=1e-3
+- **Batch size:** 128
+- **Epochs trained:** 10
+- **Validation split:** 10% of training data, seed=42
+
+## What I learned
+Writing the training loop by hand made it click that "training" is really just five repeated steps which clear gradients, forward pass, compute loss, backward pass, update weights instead of a magic `model.fit()` call. I also saw firsthand why `zero_grad()` matters forgetting it lets gradients pile up across batches and breaks training. The train/val gap in my curves also made overfitting feel concrete instead of theoretical — even a small MLP starts memorizing train-specific noise pretty early.
+
+## What I'd do differently
+I would add weight decay or bump up dropout to close the gap between train and val accuracy a bit and try swapping the MLP for a small CNN to see how much accuracy that buys for free.
+
+## How to reproduce
+1. Open `week1_mnist.ipynb` in Colab with a T4 GPU runtime.
+2. Run all cells top to bottom.
+3. Checkpoint will be saved to `best_model.pt`.

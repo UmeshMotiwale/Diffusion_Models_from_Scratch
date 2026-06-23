@@ -14,10 +14,10 @@ SHOW_AT = [0, 100, 250, 500, 750, 999]
 
 
 def get_one_image():
-    """Grab a single MNIST image, normalized to [-1, 1] (see Part 1 §5 for why)."""
+   
     transform = transforms.Compose([
-        transforms.ToTensor(),                      # [0, 1]
-        transforms.Normalize((0.5,), (0.5,)),        # -> [-1, 1]
+        transforms.ToTensor(),                    
+        transforms.Normalize((0.5,), (0.5,)),     
     ])
     try:
         ds = datasets.MNIST(root="./data", train=True, download=True, transform=transform)

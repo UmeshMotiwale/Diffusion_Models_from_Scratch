@@ -8,15 +8,7 @@
 
 ## Project Overview
 
-By the end of this program, each mentee will have built — entirely from scratch — a working diffusion model capable of generating original images, along with a polished interactive demo and a technical blog post explaining their work. No black-box API calls. Every component (UNet, noise scheduler, sampling loop) will be implemented and understood.
-
-### Final Deliverables (Per Mentee)
-
-1. A GitHub repository with a clean, documented codebase
-2. A trained diffusion model on a custom dataset of their choice
-3. An interactive Gradio demo deployed on Hugging Face Spaces
-4. A technical blog post (Medium / personal site) explaining their implementation
-5. A 5-minute final presentation
+By the end of this program, we will have built — entirely from scratch — a working diffusion model capable of generating original images, along with a polished interactive demo and a technical blog post explaining their work. No black-box API calls. Every component (UNet, noise scheduler, sampling loop) will be implemented and understood.
 
 ### What You Will Learn
 
@@ -56,20 +48,7 @@ By the end of this program, each mentee will have built — entirely from scratc
 - Write a training loop from scratch (no `model.fit()`)
 - Train a simple feedforward network on MNIST
 - Move computations to GPU
-
-### Checkpoint Question
-"Walk me through what `loss.backward()` does internally. What gets modified, and where do gradients live?"
-
-### Stretch Goals
-- Implement dropout and batch normalization manually
-- Compare SGD vs. Adam convergence on the same architecture
-- Visualize learned filters in the first layer
-
-### Common Pitfalls
-- Forgetting `optimizer.zero_grad()` — gradients accumulate across batches
-- Confusion between `.eval()` mode and training mode for dropout/batchnorm
-- Not moving both model AND data to the same device (`.to(device)`)
-
+  
 ---
 
 ## Week 2: Convolutional Networks and the UNet
@@ -81,19 +60,6 @@ By the end of this program, each mentee will have built — entirely from scratc
 - Implement skip connections and understand why they matter
 - Build a UNet from scratch — encoder, bottleneck, decoder
 - Train a UNet on an image-to-image task (denoising)
-
-### Checkpoint Question
-"Why are skip connections in a UNet important? What happens to the gradients and information flow without them?"
-
-### Stretch Goals
-- Add attention blocks at the bottleneck
-- Compare UNet performance to a vanilla CNN encoder-decoder (no skips)
-- Try replacing transposed convolutions with bilinear upsampling
-
-### Common Pitfalls
-- Mismatched spatial dimensions when concatenating skip connections (off-by-one with padding)
-- Forgetting that the output should have the same number of channels as the input
-- Insufficient capacity in the bottleneck for complex datasets
 
 ---
 
@@ -107,19 +73,6 @@ By the end of this program, each mentee will have built — entirely from scratc
 - Visualize the noising process at every timestep
 - Build the dataset pipeline that produces (noisy_image, timestep, noise) tuples
 
-### Checkpoint Question
-"Explain why we can sample `x_t` directly from `x_0` in one step instead of iterating t times. What's the math behind that, and why does it matter for training?"
-
-### Stretch Goals
-- Implement and compare quadratic and sigmoid schedules
-- Plot the signal-to-noise ratio (SNR) curve for each schedule
-- Read the "Improved DDPM" paper and understand why cosine schedules help
-
-### Common Pitfalls
-- Confusing `beta`, `alpha`, and `alpha_bar` (cumulative product) — get the notation locked in early
-- Numerical instability when computing square roots of `alpha_bar` near `t=T`
-- Not normalizing image data to `[-1, 1]` before adding noise
-
 ---
 
 ## Week 4: Training the Reverse Process
@@ -132,26 +85,6 @@ By the end of this program, each mentee will have built — entirely from scratc
 - Train a full DDPM on MNIST or Fashion-MNIST
 - Implement the iterative sampling loop
 
-### Checkpoint Question
-"During training we predict noise, but during sampling we use that noise prediction to estimate the slightly-denoised image. Walk me through the equation for one reverse step."
-
-### Stretch Goals
-- Train on Fashion-MNIST and compare sample quality
-- Implement EMA (exponential moving average) of model weights — this dramatically improves sample quality
-- Track FID score across epochs
-
-### Common Pitfalls
-- Timestep embedding dimension mismatch with UNet channels
-- Sampling loop bugs: wrong sign on noise terms, off-by-one on timestep indexing
-- Forgetting to set `model.eval()` and `torch.no_grad()` during sampling
-- Insufficient training time — DDPM needs more epochs than typical classification tasks
-
-### Mid-Program Demo Day
-At the end of Week 4, a presentation is to be shared containing:
-- Their best generated samples
-- Their biggest debugging challenge of the past 4 weeks
-- One thing they want to improve in the second half
-
 ---
 
 ## Week 5: Faster Sampling with DDIM
@@ -162,20 +95,7 @@ At the end of Week 4, a presentation is to be shared containing:
 - Understand the difference between stochastic (DDPM) and deterministic (DDIM) sampling
 - Implement DDIM sampling on top of a pre-trained DDPM
 - Benchmark sampling speed vs. quality trade-offs
-
-### Checkpoint Question
-"DDIM uses the same trained model as DDPM but generates samples faster. What's the key insight that makes this possible? What does `eta` control?"
-
-### Stretch Goals
-- Implement DPM-Solver or DPM-Solver++
-- Try interpolating between two noise vectors and visualize the smooth transition (only possible with deterministic sampling)
-- Implement image-to-image generation by partially noising an existing image then denoising
-
-### Common Pitfalls
-- Mixing up DDIM's deterministic update equation with DDPM's stochastic one
-- Wrong timestep subset — DDIM picks evenly spaced timesteps from the original schedule
-- Not realizing DDIM with `eta=1` reduces back to DDPM (good sanity check)
-
+  
 ---
 
 ## Week 6: Conditional Generation
@@ -186,19 +106,6 @@ At the end of Week 4, a presentation is to be shared containing:
 - Implement class-conditional generation (label embeddings)
 - Understand and implement classifier-free guidance (CFG)
 - Build the foundation for text-to-image (using CLIP)
-
-### Checkpoint Question
-"Classifier-free guidance interpolates between conditional and unconditional predictions. Why does increasing the guidance scale improve sample quality but reduce diversity?"
-
-### Stretch Goals
-- Replace class labels with CLIP text embeddings for true text-to-image (small scale)
-- Implement classifier guidance (the older approach) and compare
-- Visualize how guidance scale affects the noise prediction direction
-
-### Common Pitfalls
-- Forgetting to randomly drop the conditioning during training — without this, CFG won't work
-- Using the wrong sign on the CFG formula
-- Overly high guidance scales producing oversaturated, artifact-heavy images
 
 ---
 
@@ -218,21 +125,6 @@ At the end of Week 4, a presentation is to be shared containing:
 - **Quick, Draw! sketches** (specific category, 28×28)
 - **Logo dataset** (LLD-icon, 32×32)
 - **Indian art / textile patterns** (scraped from open sources — culturally interesting)
-- **Mentee's own choice** (must be approved by mentor — minimum 500 images)
-
-### Checkpoint Question
-"What was the hardest decision you made about your dataset and architecture this week? What would you change if you had 10x the compute?"
-
-### Stretch Goals
-- Implement data augmentation (random horizontal flips, slight rotations)
-- Try a larger image resolution (128×128) and report on training time and quality
-- Compare your model to a fine-tuned pretrained Stable Diffusion model on the same dataset
-
-### Common Pitfalls
-- Underestimating dataset preprocessing time (often takes longer than expected)
-- Training too few epochs and concluding the model "doesn't work"
-- Mode collapse from poorly cleaned datasets — quality > quantity
-- Not saving intermediate checkpoints — losing progress to Colab disconnects
 
 ---
 
@@ -258,37 +150,6 @@ A complete, polished portfolio piece consisting of:
 ### Stretch Goals
 - Submit the blog post to a publication (Medium's Towards Data Science, Hacker Noon)
 - Tweet a thread with samples and tag the diffusion research community
-
----
-
-### Suggested Repo Template(tentative)
-
-Provide each mentee a starter template containing:
-
-```
-diffusion-soc-2026/
-├── README.md
-├── requirements.txt
-├── data/
-│   └── (gitignored)
-├── src/
-│   ├── __init__.py
-│   ├── dataset.py
-│   ├── model.py
-│   ├── scheduler.py
-│   ├── train.py
-│   └── sample.py
-├── notebooks/
-│   └── exploration.ipynb
-├── scripts/
-│   └── download_data.py
-├── samples/
-│   └── (gitignored)
-└── checkpoints/
-    └── (gitignored)
-```
-
----
 
 ## Reference Reading List (Curated)
 
